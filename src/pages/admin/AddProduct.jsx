@@ -28,7 +28,7 @@ const AddProduct = () => {
       }
     };
 
-    category(); // Now it's called inside the useEffect
+    category();
   }, []);
 
   const [formData, setFormData] = useState({
@@ -121,7 +121,7 @@ const AddProduct = () => {
       }, 1500);
     } catch (error) {
       console.error('Error submitting form:', error);
-      toast.error(error.response?.data?.message || error.response?.data?.error|| "Failed to submit product. Please try again.", {
+      toast.error(error.response?.data?.message || error.response?.data?.error || "Failed to submit product. Please try again.", {
         position: "bottom-right",
         autoClose: 5000
       });
@@ -177,12 +177,12 @@ const AddProduct = () => {
           pauseOnHover
           theme="light"
         />
-        
+
         <header className={`bg-white rounded-lg shadow-md p-4 md:p-6 mb-4 md:mb-6 mt-6 transform transition-all duration-500 ${showForm ? 'translate-y-0 opacity-100' : '-translate-y-4 opacity-0'}`}>
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2 md:space-x-3">
               <button onClick={() => navigate('/admin/products')} className="p-2 rounded-full hover:bg-gray-100 transition-colors">
-                <ArrowLeft className="h-4 w-4 md:h-5 md:w-5 text-gray-600" />
+                <a href="/admin/dashboard"><ArrowLeft className="h-4 w-4 md:h-5 md:w-5 text-gray-600" /></a>
               </button>
               <h1 className="text-xl md:text-2xl font-bold text-gray-800">{isEditing ? 'Edit Product' : 'Add New Product'}</h1>
             </div>
@@ -240,11 +240,11 @@ const AddProduct = () => {
                 onMouseLeave={() => setActiveField('')}
               >
                 <label className="block text-sm font-medium text-gray-700">Stock</label>
-                <select 
-                  name="stock" 
-                  value={formData.stock} 
-                  onChange={handleInputChange} 
-                  className="w-full p-2 md:p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-shadow duration-200 appearance-none bg-white" 
+                <select
+                  name="stock"
+                  value={formData.stock}
+                  onChange={handleInputChange}
+                  className="w-full p-2 md:p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-shadow duration-200 appearance-none bg-white"
                   required
                 >
                   <option value="">Select a stock</option>
@@ -272,7 +272,7 @@ const AddProduct = () => {
             <div className={`flex justify-end gap-3 transition-all duration-300 delay-400 transform 
               ${showForm ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}
             >
-              <button type="button" onClick={() => navigate('/admin/products')} className="px-3 py-2 md:px-4 md:py-2 flex items-center space-x-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors duration-200" >
+              <button type="button" onClick={() => navigate('/admin/products-list')} className="px-3 py-2 md:px-4 md:py-2 flex items-center space-x-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors duration-200" >
                 <X className="h-4 w-4" />
                 <span>Cancel</span>
               </button>

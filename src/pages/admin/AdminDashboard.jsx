@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell,PieChart, Pie, Sector, } from 'recharts';
+import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell, PieChart, Pie } from 'recharts';
 import { Package, DollarSign, BarChart2 } from 'lucide-react';
 import Navbar from '../../components/Admin/Navbar.jsx';
 import axios from 'axios';
 
 const AdminDashboard = () => {
   const [isMobile, setIsMobile] = useState(false);
-const [count,setCount]=useState()
-const[data,setData]=useState([])
+  const [count, setCount] = useState()
+  const [data, setData] = useState([])
+  const [salesDatda, setSalesData] = useState([]);
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
@@ -26,53 +27,85 @@ const[data,setData]=useState([])
     { id: 4, name: 'Bluetooth Speaker', description: 'Waterproof portable speaker', price: 79.99, image1: '/api/placeholder/300/200', image2: '/api/placeholder/300/200', stock: 23 },
   ]);
 
-  // Sample sales data for charts
-  const salesData = [
-    { name: 'Jan', sales: 4000 },
-    { name: 'Feb', sales: 3000 },
-    { name: 'Mar', sales: 5000 },
-    { name: 'Apr', sales: 2780 },
-    { name: 'May', sales: 1890 },
-    { name: 'Jun', sales: 2390 },
-    { name: 'Jul', sales: 3490 },
-    { name: 'Aug', sales: 4200 },
-    { name: 'Sep', sales: 5100 },
-    { name: 'Oct', sales: 4300 },
-    { name: 'Nov', sales: 6500 },
-    { name: 'Dec', sales: 7800 },
-  ];
 
-//pice chart
-useEffect(() => {
-  const fetchCount = async () => {
+
+  const fetchSalesData = async () => {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/admin/getallProduct`, { withCredentials: true });
-      const filteredData = response.data.data.map(product => ({
-        name: product.name,
-        quantity: product.stockNum
+      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/invoice/getallinvoice`);
+      console.log(response.data.invoices);
+  
+      const salesData = response.data.invoices.map(item => ({
+        date: item.date,
+        quantity: item.items.reduce((total, currentItem) => total + Number(currentItem.quantity), 0),
+        price:item.grandTotal
       }));
-      console.log("Filtered Data:", filteredData);
-      setData(filteredData)
+  
+      setSalesData(salesData);
+      console.log("Sales Data:", salesData);
     } catch (error) {
-      console.error('Error fetching product count:', error);
+      console.error('Error fetching sales data:', error);
     }
   };
-
-  fetchCount();
-}, []);
-
-
-
-
-
- 
-const COLORS = [
-  '#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#ff4242', '#e70feb', '#1e3e3e',
-  '#A52A2A', '#5F9EA0', '#7FFF00', '#D2691E', '#FF7F50', '#6495ED', '#DC143C',
-  '#8A2BE2', '#20B2AA'
-];
-
   
+  // Use useEffect to control when it fetches
+  useEffect(() => {
+    fetchSalesData();
+  }, []);
+ 
+  
+ 
+
+  // Sample sales data for charts
+  
+  const monthNames = [
+    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+  ];
+  
+  const salesByMonth = salesDatda.reduce((acc, { date, quantity }) => {
+    const monthIndex = new Date(date).getMonth();
+    const year = new Date(date).getFullYear();
+  
+    if (year === 2025) { // Filter only for the year 2025
+      const monthName = monthNames[monthIndex];
+      acc[monthName] = (acc[monthName] || 0) + quantity;
+    }
+  
+    return acc;
+  }, {});
+  
+  const salesData = monthNames.map(month => ({
+    name: month,
+    sales: salesByMonth[month] || 0
+  }));
+  
+  console.log("fffffffffffffffffffffff",salesData);
+  
+
+  //pice chart
+  useEffect(() => {
+    const fetchCount = async () => {
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/admin/getallProduct`, { withCredentials: true });
+        const filteredData = response.data.data.map(product => ({
+          name: product.name,
+          quantity: product.stockNum
+        }));
+        console.log("Filtered Data:", filteredData);
+        setData(filteredData)
+      } catch (error) {
+        console.error('Error fetching product count:', error);
+      }
+    };
+
+    fetchCount();
+  }, []);
+
+
+  const COLORS = [
+    '#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#ff4242', '#e70feb', '#1e3e3e',
+    '#A52A2A', '#5F9EA0', '#7FFF00', '#D2691E', '#FF7F50', '#6495ED', '#DC143C',
+    '#8A2BE2', '#20B2AA'
+  ];
 
 
   // Function to determine bar color based on sales value
@@ -89,17 +122,17 @@ const COLORS = [
   useEffect(() => {
     const fetchCount = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/admin/productcount`,{withCredentials:true});
+        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/admin/productcount`, { withCredentials: true });
         setCount(response.data.data)
         // console.log(response.data.data);
       } catch (error) {
         console.error('Error fetching product count:', error);
       }
     };
-  
+
     fetchCount();
   }, []);
-  
+
 
 
   // Total sales this month (sample data)
@@ -136,7 +169,7 @@ const COLORS = [
               </div>
               <div>
                 <h2 className="text-gray-500 text-xs md:text-sm">Monthly Sales</h2>
-                <p className="text-2xl md:text-3xl font-bold">₹{currentMonthSales.toLocaleString()}</p>
+                <p className="text-2xl md:text-3xl font-bold">{currentMonthSales.toLocaleString()}</p>
               </div>
             </div>
 
@@ -145,10 +178,10 @@ const COLORS = [
                 <BarChart2 size={24} className="text-purple-600" />
               </div>
               <div>
-                <h2 className="text-gray-500 text-xs md:text-sm">Avg. Product Price</h2>
+                <h2 className="text-gray-500 text-xs md:text-sm">Avg. Total Price</h2>
                 <p className="text-2xl md:text-3xl font-bold">
                   ₹{products.length > 0
-                    ? (products.reduce((sum, product) => sum + product.price, 0) / products.length).toFixed(2)
+                    ? (salesDatda.reduce((sum, product) => sum + product.price, 0) / products.length).toFixed(2)
                     : '0.00'}
                 </p>
               </div>
@@ -190,7 +223,7 @@ const COLORS = [
                 </ResponsiveContainer>
               </div>
             </div>
- 
+
             <div className="bg-white rounded-lg shadow p-3 md:p-4">
               <h2 className="text-base md:text-lg font-semibold mb-2 md:mb-4">Monthly Sales Comparison</h2>
               <div className="h-48 md:h-64">
@@ -224,28 +257,28 @@ const COLORS = [
             </div>
 
             <div className="bg-white rounded-lg shadow p-3 md:p-4">
-  <h2 className="text-base md:text-lg font-semibold mb-2 md:mb-4">Products Overview</h2>
-  <div className="h-48 md:h-64">
-    <ResponsiveContainer width="100%" height="100%">
-      <PieChart>
-        <Pie
-          data={data}
-          cx="50%"
-          cy="50%"
-          outerRadius={80}
-          fill="#8884d8"
-          dataKey="quantity"
-          label
-        >
-          {data.map((entry, index) => (
-            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-          ))}
-        </Pie>
-        <Tooltip />
-      </PieChart>
-    </ResponsiveContainer>
-  </div>
-</div>
+              <h2 className="text-base md:text-lg font-semibold mb-2 md:mb-4">Products Overview</h2>
+              <div className="h-48 md:h-64">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={data}
+                      cx="50%"
+                      cy="50%"
+                      outerRadius={80}
+                      fill="#8884d8"
+                      dataKey="quantity"
+                      label
+                    >
+                      {data.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      ))}
+                    </Pie>
+                    <Tooltip />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
 
           </div>
 

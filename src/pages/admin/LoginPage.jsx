@@ -19,7 +19,7 @@ const LoginPage = () => {
         { withCredentials: true }
       );
       console.log("Login successful:", response.data);
-      
+
       // Show success toast
       toast.success('Login successful!', {
         position: "bottom-right",
@@ -29,15 +29,15 @@ const LoginPage = () => {
         pauseOnHover: true,
         draggable: true,
       });
-      
+
       // Navigate after a short delay to allow the user to see the success message
       setTimeout(() => {
         navigate('/admin/dashboard');
       }, 1000);
-      
+
     } catch (error) {
       console.error("Login error:", error.response?.data || error.message);
-      
+
       // Show error toast with the error message from the server if available
       toast.error(error.response?.data?.message || 'Login failed. Please check your credentials.', {
         position: "bottom-right",
@@ -49,12 +49,12 @@ const LoginPage = () => {
       });
     }
   };
-  
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-indigo-100 to-purple-100">
       {/* Toast Container positioned at bottom-right */}
       <ToastContainer position="bottom-right" />
-      
+
       <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-xl shadow-xl">
         <div className="flex flex-col items-center justify-center">
           <Player

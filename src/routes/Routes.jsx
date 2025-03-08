@@ -106,14 +106,15 @@ element:<CategoryShowPage/>
                 path:"invoice/list",
                 element: <InvoiceList />
             },
-            {
-                path: 'invoice/listid/:id',
-                element:<InvoiceDetails/>
-            },
+           
             {
                 path: 'category',
                 element: <CategoryPage />
             }
         ]
-    }
+         },{
+                    path: '/admin/invoice/listid/:id',
+                    element:<InvoiceDetails/>
+            }
+    
 ])

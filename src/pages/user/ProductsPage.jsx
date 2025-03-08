@@ -2,19 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { motion } from 'framer-motion';
-import { Card } from "flowbite-react";
+import { Card, Col, Row } from 'antd';
+
+const { Meta } = Card;
 
 const ProductsPage = () => {
   const [products, setProducts] = useState([]);
   const navigate = useNavigate();
 
-  // Fetch data from the backend
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const response = await axios(`${import.meta.env.VITE_API_BASE_URL}/api/v1/product/getallProduct`);
         setProducts(response.data.data);
-        console.log(response.data.data);
       } catch (error) {
         console.error('Error fetching products:', error);
       }
@@ -37,46 +37,48 @@ const ProductsPage = () => {
         <h1 className="text-3xl font-bold text-center mb-12 text-gray-800">
           All Products
         </h1>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 place-items-center">
+        <Row gutter={[24, 24]} justify="center">
           {products.map((product, index) => (
-            <motion.div
-              key={product._id}
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{
-                duration: 0.5,
-                delay: index * 0.1
-              }}
-              whileHover={{
-                scale: 1.05,
-                boxShadow: "0 10px 20px rgba(0,0,0,0.12)"
-              }}
-              className="transform transition-all duration-300 ease-in-out w-full max-w-xs cursor-pointer"
-              onClick={() => handleProductClick(product._id)}
-            >
-              <Card
-                imgSrc={product.images[0]}
-                imgAlt={product.name}
-                className="w-full"
+            <Col key={product._id} xs={24} sm={12} md={8} lg={6}>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9, rotate: -5 }}
+                animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                whileHover={{ scale: 1.05, rotate: 2 }}
+                className="cursor-pointer"
+                onClick={() => handleProductClick(product._id)}
               >
-                <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-black">
-                  {product.name}
-                </h5>
-                <p className="font-normal text-gray-700 dark:text-gray-400 line-clamp-2">
-                  {product.description}
-                </p>
-                <div className="flex justify-between items-center">
-                  <span className="text-xl font-bold text-gray-900 dark:text-black">
-                    ₹{product.price}
-                  </span>
-                  <span className="text-sm text-gray-600">
-                    {product.stock}
-                  </span>
-                </div>
-              </Card>
-            </motion.div>
+                <Card
+                  hoverable
+                  cover={
+                    <motion.img
+                      alt={product.name}
+                      src={product.images[0]}
+                      className="h-90 m-1 p-6 object-cover"
+                      whileHover={{ scale: 1.1 }}
+                    />
+                  }
+                >
+                  <Meta
+                    title={product.name}
+                    description={
+                      <div>
+                        <p className="text-gray-700 line-clamp-2">{product.description}</p>
+                        <motion.div
+                          className="flex justify-between items-center mt-4"
+                          whileHover={{ scale: 1.1 }}
+                        >
+                          <span className="text-xl font-bold">₹{product.price}</span>
+                          <span className="text-sm text-gray-600">Stock: {product.stock}</span>
+                        </motion.div>
+                      </div>
+                    }
+                  />
+                </Card>
+              </motion.div>
+            </Col>
           ))}
-        </div>
+        </Row>
       </motion.div>
     </div>
   );
