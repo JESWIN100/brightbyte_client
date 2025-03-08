@@ -14,26 +14,19 @@ const EditPage = () => {
     category: '',
     stock: '',
     description: '',
-    images: []
-  });
-  const [newImages, setNewImages] = useState({
     image1: null,
     image2: null
-  });
-  const [previewUrls, setPreviewUrls] = useState({
-    image1: '',
-    image2: ''
   });
 
   useEffect(() => {
     const fetchProduct = async () => {
       try {
         const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/admin/getproductbyid/${id}`, { withCredentials: true });
-
+        
         // Convert numerical stock to status string
         const productData = response.data.data;
         const stockStatus = productData.stock > 0 ? 'In Stock' : 'Out of Stock';
-
+        
         setProduct({
           ...productData,
           stock: stockStatus
@@ -49,8 +42,8 @@ const EditPage = () => {
     fetchProduct();
   }, [id]);
 
-  const [categories, setCategories] = useState([]);
-  const navigate = useNavigate();
+  const [categories, setCategories] = useState([])
+  const navigate = useNavigate()
 
   useEffect(() => {
     const category = async () => {
@@ -74,89 +67,17 @@ const EditPage = () => {
     setProduct(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleImageChange = (e, imageIndex) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    const imageKey = `image${imageIndex + 1}`;
-
-    // Create a preview URL
-    const previewUrl = URL.createObjectURL(file);
-    setPreviewUrls(prev => ({
-      ...prev,
-      [imageKey]: previewUrl
-    }));
-
-    // Store the file for upload
-    setNewImages(prev => ({
-      ...prev,
-      [imageKey]: file
-    }));
-  };
-
-  const handleRemoveImage = (imageIndex) => {
-    // Create a copy of the product's images
-    const updatedImages = [...product.images];
-    // Remove the image at the specified index
-    updatedImages[imageIndex] = null;
-
-    // Update the product state
-    setProduct(prev => ({
-      ...prev,
-      images: updatedImages
-    }));
-
-    // Clear the preview if there is one
-    const imageKey = `image${imageIndex + 1}`;
-    setPreviewUrls(prev => ({
-      ...prev,
-      [imageKey]: ''
-    }));
-
-    // Clear the file if there is one
-    setNewImages(prev => ({
-      ...prev,
-      [imageKey]: null
-    }));
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Create a FormData object for submitting file uploads
-    const formData = new FormData();
-
-    // Add all product data to the form
-    Object.keys(product).forEach(key => {
-      if (key !== 'images') {
-        formData.append(key, product[key]);
-      }
-    });
-
-    // Add new images if they exist
-    if (newImages.image1) {
-      formData.append('image1', newImages.image1);
-    }
-    if (newImages.image2) {
-      formData.append('image2', newImages.image2);
-    }
-
-    // Add information about removed images
-    if (product.images) {
-      formData.append('existingImages', JSON.stringify(product.images));
-    }
-
+    
+    // Convert stock status to number before submitting
+    const submissionData = {
+      ...product,
+      stock: product.stock 
+    };
+    
     try {
-      await axios.put(
-        `${import.meta.env.VITE_API_BASE_URL}/api/v1/admin/updateProduct/${id}`,
-        formData,
-        {
-          withCredentials: true,
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        }
-      );
+      await axios.put(`${import.meta.env.VITE_API_BASE_URL}/api/v1/admin/updateProduct/${id}`, submissionData, { withCredentials: true });
       toast.success('Product updated successfully!');
       setTimeout(() => {
         navigate('/admin/products-list');
@@ -183,7 +104,7 @@ const EditPage = () => {
           <h1 className="text-3xl font-bold">Edit Product</h1>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-6 " encType="multipart/form-data">
+        <form onSubmit={handleSubmit} className="p-6 " >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Left Column */}
             <div className="space-y-4">
@@ -246,9 +167,9 @@ const EditPage = () => {
                   onChange={handleChange}
                   className="mt-1 block w-full rounded-md bg-white text-black border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2 border"
                 >
-                  <option value="">Select a stock</option>
-                  <option value="In Stock">In Stock</option>
-                  <option value="Out of Stock">Out of Stock</option>
+                 <option value="">Select a stock</option>
+                  <option value="In stock">In stock</option>
+                  <option value="Out of stock">Out of stock</option>
                 </select>
               </motion.div>
 
@@ -258,7 +179,7 @@ const EditPage = () => {
                 transition={{ duration: 0.3, delay: 0.5 }}
                 className="col-span-full"
               >
-                <label className="block text-sm font-medium text-gray-700">Description</label>
+                <label className="block text-sm font-medium  text-gray-700">Description</label>
                 <textarea
                   name="description"
                   rows={4}
@@ -278,32 +199,25 @@ const EditPage = () => {
               >
                 <label className="block text-sm font-medium text-gray-700 mb-2">Product Image 1</label>
                 <div className="flex items-center justify-center h-48 w-full bg-gray-100 rounded-lg border-2 border-dashed border-gray-300 cursor-pointer hover:bg-gray-50 transition duration-300">
-                  {(previewUrls.image1 || (product.images && product.images[0])) ? (
+                  {product.images && product.images[0] ? (
                     <div className="relative w-full h-full">
                       <img
-                        src={previewUrls.image1 || `${import.meta.env.VITE_API_BASE_URL}/${product.images[0].replace('\\', '/')}`}
+                        src={`${import.meta.env.VITE_API_BASE_URL}/${product.images[0].replace('\\', '/')}`}
                         alt="Product preview"
                         className="h-full w-full object-cover rounded-lg"
                       />
                       <button
                         className="absolute top-2 right-2 bg-white rounded-full p-1 shadow-md hover:bg-red-50"
                         type="button"
-                        onClick={() => handleRemoveImage(0)}
                       >
                         <XCircle size={20} className="text-red-500" />
                       </button>
                     </div>
                   ) : (
-                    <label className="w-full h-full flex flex-col items-center justify-center cursor-pointer">
+                    <div className="text-center">
                       <Camera size={32} className="mx-auto text-gray-400" />
                       <p className="mt-2 text-sm text-gray-500">Click to upload image</p>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        className="hidden"
-                        onChange={(e) => handleImageChange(e, 0)}
-                      />
-                    </label>
+                    </div>
                   )}
                 </div>
               </motion.div>
@@ -315,32 +229,25 @@ const EditPage = () => {
               >
                 <label className="block text-sm font-medium text-gray-700 mb-2">Product Image 2</label>
                 <div className="flex items-center justify-center h-48 w-full bg-gray-100 rounded-lg border-2 border-dashed border-gray-300 cursor-pointer hover:bg-gray-50 transition duration-300">
-                  {(previewUrls.image2 || (product.images && product.images[1])) ? (
+                  {product.images && product.images[1] ? (
                     <div className="relative w-full h-full">
                       <img
-                        src={previewUrls.image2 || `${import.meta.env.VITE_API_BASE_URL}/${product.images[1].replace('\\', '/')}`}
+                        src={`${import.meta.env.VITE_API_BASE_URL}/${product.images[1].replace('\\', '/')}`}
                         alt="Product preview"
                         className="h-full w-full object-cover rounded-lg"
                       />
                       <button
                         className="absolute top-2 right-2 bg-white rounded-full p-1 shadow-md hover:bg-red-50"
                         type="button"
-                        onClick={() => handleRemoveImage(1)}
                       >
                         <XCircle size={20} className="text-red-500" />
                       </button>
                     </div>
                   ) : (
-                    <label className="w-full h-full flex flex-col items-center justify-center cursor-pointer">
+                    <div className="text-center">
                       <Camera size={32} className="mx-auto text-gray-400" />
                       <p className="mt-2 text-sm text-gray-500">Click to upload image</p>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        className="hidden"
-                        onChange={(e) => handleImageChange(e, 1)}
-                      />
-                    </label>
+                    </div>
                   )}
                 </div>
               </motion.div>
