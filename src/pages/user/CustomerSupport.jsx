@@ -60,6 +60,11 @@ const CustomerSupportPage = () => {
 
     return (
         <div className="min-h-screen bg-gray-50">
+            {/* Added Top Gap/Spacing */}
+            <div className="pt-10 bg-gray-50">
+                {/* This creates empty space at the top */}
+            </div>
+
             {/* Hero Section */}
             <div className="bg-gradient-to-r from-indigo-500 to-purple-600 py-16 px-4 text-center text-white">
                 <h1 className="text-4xl font-bold mb-4 animate-fade-in">

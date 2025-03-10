@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Sparkles, ArrowLeft, Star, CheckCircle, Sun } from 'lucide-react';
 import image from '../../assets/All products.jpg';
+import logo from '../../assets/bright_byte-removebg-preview.png'
 import CategorySection from './Category';
 import { Image } from 'antd';
 import axios from 'axios';
@@ -239,7 +240,7 @@ const HomePage = () => {
           <div
             className="absolute inset-0 bg-cover bg-center"
             style={{
-              backgroundImage: `url(${image})`
+              backgroundImage: `url('${image}')`
             }}
           />
 
@@ -397,7 +398,7 @@ const HomePage = () => {
                   style={{ top: '5%', right: '5%' }}
                 >
                   <img
-                    src="/src/assets/img2.jpg"
+                    src="https://img.freepik.com/premium-photo/bright-cleaning-sprays-lush-green-plant-illuminated-by-warm-sunlight-symbolizing-freshness_687463-15176.jpg"
                     alt="Cleaning products showcase"
                     className="w-full h-full object-cover"
                   />
@@ -434,7 +435,7 @@ const HomePage = () => {
                     style={{ bottom: '5%', left: '5%' }}
                   >
                     <img
-                      src="/src/assets/img1.jpg"
+                      src="https://lestoilcleaner.com/wp-content/uploads/2024/10/Lestoil-3-1.webp"
                       alt="Premium cleaning quality showcase"
                       className="w-full h-full object-cover"
                     />
@@ -463,7 +464,7 @@ const HomePage = () => {
                     }}
                   >
                     <img
-                      src="/src/assets/bright_byte-removebg-preview.png"
+                      src={logo}
                       alt={`Product icon ${i}`}
                       className="w-20 h-15 rounded-full object-cover"
                     />

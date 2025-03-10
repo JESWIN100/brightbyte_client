@@ -138,14 +138,19 @@ const ProductList = () => {
                         <span className="text-base md:text-lg font-bold text-gray-900">₹{product.price.toFixed(2)}</span>
                       </td>
                       <td className="px-3 md:px-6 py-3 md:py-4">
-                        <span className={`px-2 md:px-3 py-1 inline-flex text-xs md:text-sm font-medium rounded-full ${product.stock === 'Out of stock' ? 'bg-red-100 text-red-800' :
-                            product.stock === 'In stock' ? 'bg-green-100 text-green-800' :
-                              product.stock === 'Limited stock' ? 'bg-yellow-100 text-yellow-800' :
-                                'bg-red-100 text-red-800'
-                          }`}>
-                          {product.stock}
-                        </span>
-                      </td>
+  <span 
+    className={`px-2 md:px-3 py-1 inline-flex text-xs md:text-sm font-medium rounded-full ${
+      product.stockNum === 0 ? 'bg-red-100 text-red-800' :
+      product.stockNum >= 10 ? 'bg-green-100 text-green-800' :
+      product.stockNum > 0 && product.stockNum < 10 ? 'bg-yellow-100 text-yellow-800' :
+      'bg-red-100 text-red-800'
+    }`}>
+    {product.stockNum === 0 ? 'Out of stock' :
+     product.stockNum >= 10 ? 'In stock' :
+     'Limited stock'}
+  </span>
+</td>
+
                       <td className="px-3 md:px-6 py-3 md:py-4 text-right text-sm font-medium">
                         <button className="bg-indigo-100 text-indigo-600 p-1 md:p-2 rounded-lg hover:bg-indigo-200 transition-colors mr-1 md:mr-2">
                           <a href={`/admin/edit-product/${product._id}`}><Edit size={16} /></a>

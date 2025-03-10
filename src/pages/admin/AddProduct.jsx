@@ -233,25 +233,7 @@ const AddProduct = () => {
                 </select>
               </div>
 
-              <div className={`space-y-2 transition-all duration-300 delay-250 transform 
-                ${showForm ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}
-                ${activeField === 'stock' ? 'scale-103 shadow-sm' : ''}`}
-                onMouseEnter={() => setActiveField('stock')}
-                onMouseLeave={() => setActiveField('')}
-              >
-                <label className="block text-sm font-medium text-gray-700">Stock</label>
-                <select
-                  name="stock"
-                  value={formData.stock}
-                  onChange={handleInputChange}
-                  className="w-full p-2 md:p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-shadow duration-200 appearance-none bg-white"
-                  required
-                >
-                  <option value="">Select a stock</option>
-                  <option value="In stock">In stock</option>
-                  <option value="Out of stock">Out of stock</option>
-                </select>
-              </div>
+             
             </div>
 
             <div className={`mb-4 md:mb-6 space-y-2 transition-all duration-300 delay-300 transform 

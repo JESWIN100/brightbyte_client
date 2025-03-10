@@ -27,7 +27,7 @@ const handleProductClick = (name) => {
             onHoverStart={() => setIsHovered(true)}
             onHoverEnd={() => setIsHovered(false)}
         >
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center"  onClick={() => handleProductClick(category.name)}>
                 <motion.div
                     className="relative w-44 h-44 rounded-full shadow-lg overflow-hidden transform-style-3d"
                     animate={{ rotateY: isHovered ? 5 : 0, z: isHovered ? 20 : 0 }}
@@ -42,6 +42,7 @@ const handleProductClick = (name) => {
                                 animate={{ x: 200, opacity: 1 }}
                                 exit={{ opacity: 0 }}
                                 transition={{ duration: 0.8 }}
+                                onClick={() => handleProductClick(category.name)}
                             />
                         )}
                     </AnimatePresence>
@@ -175,7 +176,7 @@ console.log("fdfdf",data);
                     </motion.button>
                     <div
                         ref={scrollContainer}
-                        className="flex overflow-x-auto py-6 no-scrollbar scroll-smooth"
+                        className="flex overflow-hidden py-6  "
                         style={{
                             scrollSnapType: 'x mandatory',
                             paddingLeft: '10%',
