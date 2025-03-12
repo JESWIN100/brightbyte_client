@@ -24,7 +24,7 @@ const ProfilePage = () => {
       try {
         const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/admin/profile`, { withCredentials: true });
         setProfile(response.data);
-        console.log(response.data);
+        // console.log(response.data);
       } catch (error) {
         toast.error('Failed to fetch profile data');
         console.error(error);

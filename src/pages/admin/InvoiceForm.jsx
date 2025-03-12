@@ -40,7 +40,7 @@ const InvoiceForm = () => {
           name: product.name,
           id: product._id
         }));
-        console.log("Filtered Data:", filteredData);
+        // console.log("Filtered Data:", filteredData);
 
         setDescriptions(filteredData)
       } catch (error) {
@@ -89,7 +89,7 @@ const InvoiceForm = () => {
       reset();
       setItems([{ description: '', ml: '', unitPrice: '', quantity: '', gst: '', grossValue: '' }]);
 
-      console.log(response);
+      // console.log(response);
     } catch (error) {
       toast.error('Failed to submit invoice');
       console.error('Invoice submission error:', error);

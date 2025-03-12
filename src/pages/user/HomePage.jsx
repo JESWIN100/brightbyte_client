@@ -52,7 +52,7 @@ const LatestProductSection = () => {
         const response = await axios(`${import.meta.env.VITE_API_BASE_URL}/api/v1/product/getallProduct`);
         const latestProducts = response.data.data.slice(-4); // Get the last 4 products
         setCategories(latestProducts);
-        console.log("Latest products:", latestProducts);
+        // console.log("Latest products:", latestProducts);
       } catch (error) {
         console.error('Error fetching products:', error);
       }

@@ -20,19 +20,13 @@ const AdminDashboard = () => {
   }, []);
 
   // Sample data 
-  const [products, setProducts] = useState([
-    { id: 1, name: 'Premium Headphones', description: 'Noise cancelling wireless headphones', price: 199.99, image1: '/api/placeholder/300/200', image2: '/api/placeholder/300/200', stock: 45 },
-    { id: 2, name: 'Smart Watch', description: 'Fitness tracker with heart rate monitor', price: 149.99, image1: '/api/placeholder/300/200', image2: '/api/placeholder/300/200', stock: 32 },
-    { id: 3, name: 'Wireless Earbuds', description: 'True wireless earbuds with charging case', price: 89.99, image1: '/api/placeholder/300/200', image2: '/api/placeholder/300/200', stock: 78 },
-    { id: 4, name: 'Bluetooth Speaker', description: 'Waterproof portable speaker', price: 79.99, image1: '/api/placeholder/300/200', image2: '/api/placeholder/300/200', stock: 23 },
-  ]);
-
+ 
 
 
   const fetchSalesData = async () => {
     try {
       const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/invoice/getallinvoice`);
-      console.log(response.data.invoices);
+      // console.log(response.data.invoices);
   
       const salesData = response.data.invoices.map(item => ({
         date: item.date,
@@ -41,7 +35,7 @@ const AdminDashboard = () => {
       }));
   
       setSalesData(salesData);
-      console.log("Sales Data:", salesData);
+   
     } catch (error) {
       console.error('Error fetching sales data:', error);
     }
@@ -78,7 +72,7 @@ const AdminDashboard = () => {
     sales: salesByMonth[month] || 0
   }));
   
-  console.log("fffffffffffffffffffffff",salesData);
+  // console.log("fffffffffffffffffffffff",salesData);
   
 
   //pice chart
@@ -90,7 +84,7 @@ const AdminDashboard = () => {
           name: product.name,
           quantity: product.stockNum
         }));
-        console.log("Filtered Data:", filteredData);
+        // console.log("Filtered Data:", filteredData);
         setData(filteredData)
       } catch (error) {
         console.error('Error fetching product count:', error);
@@ -135,9 +129,14 @@ const AdminDashboard = () => {
 
 
 
+
   // Total sales this month (sample data)
   const currentMonthSales = salesData[new Date().getMonth()].sales;
 
+
+;
+
+  
   return (
     <div className="flex flex-col md:flex-row bg-gray-100 min-h-screen">
       {/* Sidebar */}
@@ -180,9 +179,11 @@ const AdminDashboard = () => {
               <div>
                 <h2 className="text-gray-500 text-xs md:text-sm">Avg. Total Price</h2>
                 <p className="text-2xl md:text-3xl font-bold">
-                  ₹{products.length > 0
-                    ? (salesDatda.reduce((sum, product) => sum + product.price, 0) / products.length).toFixed(2)
-                    : '0.00'}
+                ₹{salesDatda.length > 0
+    ? salesDatda.reduce((sum, product) => sum + product.price, 0).toFixed(2)
+    : '0.00'}
+
+                   
                 </p>
               </div>
             </div>

@@ -15,7 +15,7 @@ const ProductList = () => {
           { withCredentials: true }
         );
         setProducts(response.data.data); // Assuming the products are in response.data.data
-        console.log("products", response.data.data);
+        // console.log("products", response.data.data);
 
       } catch (error) {
         console.error("Failed to fetch products:", error);
@@ -27,7 +27,7 @@ const ProductList = () => {
   }, []);
 
   const handleDelete = async (id) => {
-    console.log(id);
+    // console.log(id);
     try {
       await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/api/v1/admin/deleteProduct/${id}`, { withCredentials: true });
 

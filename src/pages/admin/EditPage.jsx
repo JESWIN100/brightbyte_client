@@ -31,7 +31,7 @@ const EditPage = () => {
           ...productData,
           stock: stockStatus
         });
-        console.log(response.data.data);
+        // console.log(response.data.data);
 
       } catch (error) {
         console.error('Error fetching product:', error);
@@ -51,7 +51,7 @@ const EditPage = () => {
         const response = await axios.get(
           `${import.meta.env.VITE_API_BASE_URL}/api/v1/category/getall`
         );
-        console.log(response.data.categories);
+        // console.log(response.data.categories);
         setCategories(response.data.categories);
       } catch (error) {
         console.log(error);

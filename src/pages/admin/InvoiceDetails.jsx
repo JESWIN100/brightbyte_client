@@ -241,7 +241,7 @@ const InvoiceDetails = () => {
                         </td>
                         <td className="p-3">
                           <span className="inline-block bg-blue-100 text-blue-800 text-center rounded-full px-2 py-1 min-w-6 text-sm print:bg-white print:border print:border-gray-300">
-                            {item.gstPercentage}-
+                            {item.gst}-
                           </span>
                         </td>
                         <td className="p-3 font-semibold text-green-700 print:text-gray-800">₹{item.grossValue}</td>

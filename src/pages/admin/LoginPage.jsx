@@ -12,13 +12,13 @@ const LoginPage = () => {
 
   const onSubmit = async (data) => {
     try {
-      console.log('Login credentials:', data);
+      // console.log('Login credentials:', data);
       const response = await axios.post(
         `${import.meta.env.VITE_API_BASE_URL}/api/v1/admin/login`,
         data,
         { withCredentials: true }
       );
-      console.log("Login successful:", response.data);
+      // console.log("Login successful:", response.data);
 
       // Show success toast
       toast.success('Login successful!', {

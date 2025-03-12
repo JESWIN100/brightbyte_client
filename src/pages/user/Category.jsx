@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 // Circular Category component
 const CircularCategory = ({ category, index }) => {
     const [isHovered, setIsHovered] = React.useState(false);
-console.log("sds",category);
+// console.log("sds",category);
 const navigate = useNavigate();
 
 const handleProductClick = (name) => {
@@ -122,13 +122,13 @@ const CategorySection = () => {
                 const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/category/getall`);
                 const data = response.data.categories
                 ;
-console.log("fdfdf",data);
+// console.log("fdfdf",data);
 
                 // Check if data is an array
                 if (Array.isArray(data)) {
                     setCategories(data);
                 } else {
-                    console.error('Unexpected response format:', data);
+                    // console.error('Unexpected response format:', data);
                     setCategories([]);
                 }
             } catch (error) {

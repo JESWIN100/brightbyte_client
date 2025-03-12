@@ -15,9 +15,9 @@ export default function CategoryShowPage() {
     const fetchProducts = async () => {
       try {
         const response = await axios(`${import.meta.env.VITE_API_BASE_URL}/api/v1/product/getallProduct`);
-        console.log('Fetched data:', response.data);
+        // console.log('Fetched data:', response.data);
         const filteredProducts = response.data.data.filter(product => {
-          console.log('Comparing:', product.category, name);
+          // console.log('Comparing:', product.category, name);
           return product.category === name;
         });
         setProducts(filteredProducts);
