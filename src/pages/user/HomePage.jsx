@@ -434,11 +434,11 @@ const HomePage = () => {
                     }}
                     style={{ bottom: '5%', left: '5%' }}
                   >
-                    <img
+                    {/* <img
                       src="https://lestoilcleaner.com/wp-content/uploads/2024/10/Lestoil-3-1.webp"
                       alt="Premium cleaning quality showcase"
                       className="w-full h-full object-cover"
-                    />
+                    /> */}
                   </motion.div>
                 </motion.div>
 

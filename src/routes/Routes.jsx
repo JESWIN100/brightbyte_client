@@ -22,6 +22,8 @@ import InvoiceForm from "../pages/admin/InvoiceForm.jsx";
 import InvoiceList from "../pages/admin/InvoiceList.jsx";
 import InvoiceDetails from "../pages/admin/InvoiceDetails.jsx";
 import CategoryPage from "../pages/admin/CategoryPage.jsx";
+import Parties from "../pages/admin/Parties.jsx";
+
 
 export const router=createBrowserRouter([
     {
@@ -110,6 +112,11 @@ element:<CategoryShowPage/>
             {
                 path: 'category',
                 element: <CategoryPage />
+            },
+            
+            {
+                path: 'parties',
+                element: <Parties />
             }
         ]
          },{

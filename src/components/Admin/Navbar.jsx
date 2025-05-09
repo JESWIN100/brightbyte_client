@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Home, ShoppingBag, Menu, X, Layers, ScrollText, ChartBarStacked, ChevronDown, ChevronRight } from 'lucide-react';
+import { Home, ShoppingBag, Menu, X, Layers, ScrollText, ChartBarStacked, ChevronDown, ChevronRight, ShoppingCart, Users } from 'lucide-react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -65,7 +65,9 @@ const Navbar = () => {
         { id: 'invoice-list', label: 'Invoice List', path: '/admin/invoice/list' }
       ]
     },
-    { id: 'category', label: 'Category', icon: <ChartBarStacked size={20} />, path: "/admin/category" },
+    
+    { id: 'parties', label: 'Parties', icon: <Users size={20} />  , path: "/admin/parties" },
+    { id: 'category', label: 'Category', icon:  <ChartBarStacked size={20} />, path: "/admin/category" },
   ];
 
   useEffect(() => {
